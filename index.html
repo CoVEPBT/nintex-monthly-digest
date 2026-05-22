@@ -7,23 +7,23 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: Arial, sans-serif; background: #f4f6f9; color: #333; }
-.header { background: #002664; color: white; padding: 20px 32px; }
+.header { background: #000054; color: white; padding: 20px 32px; }
 .header h1 { font-size: 20px; font-weight: 600; }
 .header p { font-size: 13px; opacity: 0.8; margin-top: 2px; }
 .container { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
 .card { background: white; border-radius: 8px; border: 1px solid #e0e4ea; padding: 24px; margin-bottom: 20px; }
-.card h2 { font-size: 15px; font-weight: 600; color: #002664; margin-bottom: 16px; }
+.card h2 { font-size: 15px; font-weight: 600; color: #000054; margin-bottom: 16px; }
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
 .stat { background: #f8f9fc; border-radius: 8px; padding: 16px; text-align: center; border: 1px solid #e0e4ea; }
-.stat .number { font-size: 28px; font-weight: 700; color: #002664; }
+.stat .number { font-size: 28px; font-weight: 700; color: #000054; }
 .stat .label { font-size: 12px; color: #666; margin-top: 4px; }
 .btn { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
-.btn-primary { background: #002664; color: white; }
-.btn-primary:hover { background: #001a47; }
+.btn-primary { background: #000054; color: white; }
+.btn-primary:hover { background: #00003a; }
 .btn-primary:disabled { background: #8899bb; cursor: not-allowed; }
 .btn-success { background: #2e7d32; color: white; }
 .btn-success:hover { background: #1b5e20; }
-.btn-secondary { background: white; color: #002664; border: 1px solid #002664; }
+.btn-secondary { background: white; color: #000054; border: 1px solid #000054; }
 .btn-secondary:hover { background: #f0f4ff; }
 .btn-preview { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; padding: 4px 10px; font-size: 12px; }
 .btn-preview:hover { background: #bbdefb; }
@@ -33,17 +33,16 @@ body { font-family: Arial, sans-serif; background: #f4f6f9; color: #333; }
 .log-success { color: #4caf50; }
 .log-error { color: #f44336; }
 .log-info { color: #64b5f6; }
-.log-warn { color: #ffb74d; }
 .progress-bar { height: 8px; background: #e0e4ea; border-radius: 4px; overflow: hidden; margin: 12px 0; }
-.progress-fill { height: 100%; background: #002664; border-radius: 4px; transition: width 0.3s; }
+.progress-fill { height: 100%; background: #000054; border-radius: 4px; transition: width 0.3s; }
 .progress-text { font-size: 13px; color: #666; text-align: center; }
 .alert { padding: 12px 16px; border-radius: 6px; font-size: 13px; margin-bottom: 16px; line-height: 1.6; }
 .alert-info { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
 .alert-success { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
 .alert-warning { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
 .file-drop { border: 2px dashed #b0bec5; border-radius: 8px; padding: 32px; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 16px; }
-.file-drop:hover { border-color: #002664; background: #f0f4ff; }
-.file-drop.drag-over { border-color: #002664; background: #e8edf8; }
+.file-drop:hover { border-color: #000054; background: #f0f4ff; }
+.file-drop.drag-over { border-color: #000054; background: #e8edf8; }
 .file-drop p { color: #666; font-size: 14px; margin-top: 8px; }
 .file-drop .icon { font-size: 32px; }
 .recipient-table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -57,19 +56,19 @@ body { font-family: Arial, sans-serif; background: #f4f6f9; color: #333; }
 .badge-error { background: #ffebee; color: #c62828; }
 .badge-empty { background: #f5f5f5; color: #666; }
 .section-pill { display: inline-block; padding: 1px 6px; border-radius: 8px; font-size: 11px; margin: 1px; }
-.pill-u { background: #fff3e0; color: #e65100; }
-.pill-i { background: #e3f2fd; color: #1565c0; }
+.pill-u { background: #fce8e6; color: #d93025; }
+.pill-i { background: #fff8e1; color: #9a7000; }
 .pill-d { background: #e0f2f1; color: #00695c; }
-.pill-o { background: #ffebee; color: #c62828; }
+.pill-o { background: #e8f0fe; color: #1a73e8; }
 .actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 #download-section { display: none; }
 .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; overflow-y: auto; padding: 40px 20px; }
 .modal-overlay.active { display: flex; align-items: flex-start; justify-content: center; }
-.modal { background: white; border-radius: 8px; max-width: 750px; width: 100%; padding: 0; overflow: hidden; }
-.modal-header { background: #002664; color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+.modal { background: white; border-radius: 8px; max-width: 700px; width: 100%; overflow: hidden; }
+.modal-header { background: #000054; color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
 .modal-header h3 { font-size: 15px; font-weight: 600; }
 .modal-close { background: none; border: none; color: white; cursor: pointer; font-size: 20px; padding: 0; line-height: 1; }
-.modal-body { padding: 20px; overflow-y: auto; max-height: 70vh; }
+.modal-body { padding: 0; overflow-y: auto; max-height: 75vh; }
 .modal-nav { padding: 12px 20px; border-top: 1px solid #e0e4ea; display: flex; justify-content: space-between; align-items: center; background: #f8f9fc; }
 .modal-nav span { font-size: 13px; color: #666; }
 </style>
@@ -101,7 +100,7 @@ body { font-family: Arial, sans-serif; background: #f4f6f9; color: #333; }
       <strong>File location in SharePoint:</strong><br>
       <code>General / Process &amp; Knowledge Management / Data &amp; Reporting / Nintex Process Manager / monthly-process-data.json</code><br><br>
       <a href="https://rmiteduau.sharepoint.com/sites/VEPMO/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FVEPMO%2FShared%20Documents%2FGeneral%2FProcess%20%26%20Knowledge%20Management%2FData%20%26%20Reporting%2FNintex%20Process%20Manager" target="_blank" style="color:#e65100;font-weight:600;">Open SharePoint folder ↗</a>
-      &nbsp;— download the file, then load it below.
+      — download the file, then load it below.
     </div>
     <div class="file-drop" id="file-drop" onclick="document.getElementById('file-input').click()">
       <div class="icon">📂</div>
@@ -116,19 +115,19 @@ body { font-family: Arial, sans-serif; background: #f4f6f9; color: #333; }
     <h2>Step 2 — Generate &amp; preview HTML emails</h2>
     <div class="actions" style="margin-bottom: 16px;">
       <button class="btn btn-primary" id="btn-generate" onclick="generateAll()" disabled>Generate HTML for all recipients</button>
-      <button class="btn btn-secondary" id="btn-preview-all" onclick="previewRecipient(0)" style="display:none">Preview first email</button>
+      <button class="btn btn-secondary" id="btn-preview-first" onclick="previewRecipient(0)" style="display:none">Preview first email</button>
     </div>
     <div class="progress-bar" id="progress-bar" style="display:none">
       <div class="progress-fill" id="progress-fill" style="width:0%"></div>
     </div>
-    <div class="progress-text" id="progress-text" style="display:none; margin-top: 8px;"></div>
-
-    <div id="recipient-table-wrap" style="display:none; margin-top: 16px; overflow-x: auto;">
+    <div class="progress-text" id="progress-text" style="display:none; margin-top:8px;"></div>
+    <div id="recipient-table-wrap" style="display:none; margin-top:16px; overflow-x:auto;">
       <table class="recipient-table">
         <thead>
           <tr>
             <th>Recipient</th>
             <th>Items</th>
+            <th>Flags</th>
             <th>Status</th>
             <th>Preview</th>
           </tr>
@@ -142,12 +141,12 @@ body { font-family: Arial, sans-serif; background: #f4f6f9; color: #333; }
   <div class="card" id="download-section">
     <h2>Step 3 — Download &amp; upload to SharePoint</h2>
     <div class="alert alert-success" id="complete-alert"></div>
-    <div class="actions" style="margin-bottom: 16px;">
+    <div class="actions" style="margin-bottom:16px;">
       <button class="btn btn-success" onclick="downloadReadyFile()">⬇ Download monthly-process-data-ready.json</button>
     </div>
     <div class="alert alert-info">
       <strong>After downloading:</strong>
-      <ol style="margin-top: 8px; margin-left: 20px; line-height: 2;">
+      <ol style="margin-top:8px;margin-left:20px;line-height:2;">
         <li>Open the SharePoint folder: <a href="https://rmiteduau.sharepoint.com/sites/VEPMO/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FVEPMO%2FShared%20Documents%2FGeneral%2FProcess%20%26%20Knowledge%20Management%2FData%20%26%20Reporting%2FNintex%20Process%20Manager" target="_blank" style="color:#1565c0;">Nintex Process Manager ↗</a></li>
         <li>Drag <strong>monthly-process-data-ready.json</strong> into the folder</li>
         <li>Power Automate detects the file and sends all emails automatically</li>
@@ -162,7 +161,7 @@ body { font-family: Arial, sans-serif; background: #f4f6f9; color: #333; }
     <div class="log" id="activity-log">
       <div class="log-entry"><span class="log-time log-info">--:--:--</span><span class="log-info"> Tool ready. Load the monthly data file to begin.</span></div>
     </div>
-    <div style="margin-top: 12px; display: flex; gap: 8px;">
+    <div style="margin-top:12px;display:flex;gap:8px;">
       <button class="btn btn-secondary" onclick="downloadLog()">Download log</button>
       <button class="btn btn-secondary" onclick="clearLog()">Clear log</button>
     </div>
@@ -178,7 +177,7 @@ body { font-family: Arial, sans-serif; background: #f4f6f9; color: #333; }
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
-      <iframe id="preview-iframe" style="width:100%; height:500px; border:none;" sandbox="allow-same-origin"></iframe>
+      <iframe id="preview-iframe" style="width:100%;height:600px;border:none;" sandbox="allow-same-origin"></iframe>
     </div>
     <div class="modal-nav">
       <button class="btn btn-secondary" id="btn-prev" onclick="navigatePreview(-1)">← Previous</button>
@@ -236,7 +235,6 @@ function onFileLoaded(filename) {
   renderRecipientTable(recipients.map(r => ({ ...r, status: 'Pending', emailHtml: '' })));
   document.getElementById('recipient-table-wrap').style.display = 'block';
   logEntry('success', `Loaded ${recipients.length} recipients, ${totalItems} total items`);
-  if (queueData.generatedAt) logEntry('info', `Data generated at: ${queueData.generatedAt}`);
 }
 
 function renderRecipientTable(recipients) {
@@ -244,36 +242,56 @@ function renderRecipientTable(recipients) {
   tbody.innerHTML = recipients.map((r, idx) => {
     const s = r.sections || {};
     const u = (s.unpublished||[]).length;
-    const i = (s.inProgress||[]).length;
+    const ip = (s.inProgress||[]).length;
     const d = (s.dueSoon||[]).length;
-    const o = (s.overdue||[]).length;
-    const total = u + i + d + o;
+    const ov = (s.overdue||[]).length;
+    const total = u + ip + d + ov;
     const pills = [
-      u > 0 ? `<span class="section-pill pill-u">🚫 ${u}</span>` : '',
-      i > 0 ? `<span class="section-pill pill-i">📝 ${i}</span>` : '',
-      d > 0 ? `<span class="section-pill pill-d">📅 ${d}</span>` : '',
-      o > 0 ? `<span class="section-pill pill-o">⚠️ ${o}</span>` : ''
+      u > 0 ? `<span class="section-pill pill-u">🗄️ ${u}</span>` : '',
+      ip > 0 ? `<span class="section-pill pill-i">📝 ${ip}</span>` : '',
+      d > 0 ? `<span class="section-pill pill-d">🗓️ ${d}</span>` : '',
+      ov > 0 ? `<span class="section-pill pill-o">📌 ${ov}</span>` : ''
     ].join('');
-    const statusBadge = r.status === 'Ready'
-      ? '<span class="badge badge-ready">Ready</span>'
-      : r.status === 'Error'
-      ? '<span class="badge badge-error">Error</span>'
-      : total === 0
-      ? '<span class="badge badge-empty">No items</span>'
+    const needsTraining = needsTrainingBanner(r);
+    const hasSameOwner = hasSameOwnerExpert(r);
+    const flags = [
+      needsTraining ? '<span class="badge" style="background:#fff8e1;color:#9a7000;">🎓 Training</span>' : '',
+      hasSameOwner ? '<span class="badge" style="background:#fce8e6;color:#d93025;">⚠ Same person</span>' : ''
+    ].filter(Boolean).join(' ') || '—';
+    const statusBadge = r.status === 'Ready' ? '<span class="badge badge-ready">Ready</span>'
+      : r.status === 'Error' ? '<span class="badge badge-error">Error</span>'
+      : total === 0 ? '<span class="badge badge-empty">No items</span>'
       : '<span class="badge badge-pending">Pending</span>';
-    const previewBtn = r.status === 'Ready'
-      ? `<button class="btn btn-preview" onclick="previewRecipient(${idx})">Preview ↗</button>`
-      : '—';
+    const previewBtn = r.status === 'Ready' ? `<button class="btn btn-preview" onclick="previewRecipient(${idx})">Preview ↗</button>` : '—';
     return `<tr id="row-${idx}">
-      <td>
-        <strong style="font-size:13px;">${escHtml(r.recipientName)}</strong><br>
-        <span style="color:#999;font-size:11px;">${escHtml(r.recipientEmail)}</span>
-      </td>
+      <td><strong style="font-size:13px;">${escHtml(r.recipientName)}</strong><br><span style="color:#999;font-size:11px;">${escHtml(r.recipientEmail)}</span></td>
       <td>${total > 0 ? pills : '<span style="color:#999;font-size:12px;">No items</span>'}</td>
+      <td>${flags}</td>
       <td id="status-${idx}">${statusBadge}</td>
       <td id="preview-${idx}">${previewBtn}</td>
     </tr>`;
   }).join('');
+}
+
+function needsTrainingBanner(recipient) {
+  const s = recipient.sections || {};
+  const allItems = [...(s.unpublished||[]), ...(s.inProgress||[]), ...(s.dueSoon||[]), ...(s.overdue||[])];
+  return allItems.some(item => {
+    const ownerPerm = getVal(item, '[OwnerPermission]', 'ownerPermission') || '';
+    const expertPerm = getVal(item, '[ExpertPermission]', 'expertPermission') || '';
+    const ownerEmail = (getVal(item, '[OwnerEmail]', 'ownerEmail') || '').toLowerCase();
+    const recEmail = (recipient.recipientEmail || '').toLowerCase();
+    if (ownerEmail === recEmail && ownerPerm === 'User') return true;
+    const expertEmail = (getVal(item, '[ExpertEmail]', 'expertEmail') || '').toLowerCase();
+    if (expertEmail === recEmail && expertPerm === 'User') return true;
+    return false;
+  });
+}
+
+function hasSameOwnerExpert(recipient) {
+  const s = recipient.sections || {};
+  const allItems = [...(s.unpublished||[]), ...(s.inProgress||[]), ...(s.dueSoon||[]), ...(s.overdue||[])];
+  return allItems.some(item => parseInt(getVal(item, '[SameOwnerExpert]', 'sameOwnerExpert') || 0) === 1);
 }
 
 async function generateAll() {
@@ -283,9 +301,8 @@ async function generateAll() {
   document.getElementById('btn-generate').disabled = true;
   document.getElementById('progress-bar').style.display = 'block';
   document.getElementById('progress-text').style.display = 'block';
-  document.getElementById('btn-preview-all').style.display = 'none';
-  let generated = 0;
-  let errors = 0;
+  document.getElementById('btn-preview-first').style.display = 'none';
+  let generated = 0, errors = 0;
 
   for (let i = 0; i < recipients.length; i++) {
     const r = recipients[i];
@@ -300,7 +317,6 @@ async function generateAll() {
       document.getElementById('stat-generated').textContent = generated;
       document.getElementById(`status-${i}`).innerHTML = '<span class="badge badge-ready">Ready</span>';
       document.getElementById(`preview-${i}`).innerHTML = `<button class="btn btn-preview" onclick="previewRecipient(${i})">Preview ↗</button>`;
-      logEntry('success', `✓ ${r.recipientName}`);
     } catch (err) {
       generatedRecipients.push({ ...r, emailHtml: '', status: 'Error', error: err.message });
       errors++;
@@ -311,21 +327,200 @@ async function generateAll() {
     await sleep(10);
   }
 
-  readyData = {
-    generatedAt: queueData.generatedAt,
-    readyAt: new Date().toISOString(),
-    totalRecipients: recipients.length,
-    generated, errors,
-    recipients: generatedRecipients
-  };
-
+  readyData = { generatedAt: queueData.generatedAt, readyAt: new Date().toISOString(), totalRecipients: recipients.length, generated, errors, recipients: generatedRecipients };
   document.getElementById('progress-fill').style.width = '100%';
   document.getElementById('progress-text').textContent = `Complete — ${generated} generated, ${errors} errors`;
   document.getElementById('download-section').style.display = 'block';
-  document.getElementById('btn-preview-all').style.display = 'inline-flex';
+  document.getElementById('btn-preview-first').style.display = 'inline-flex';
   document.getElementById('complete-alert').textContent = `HTML generated for ${generated} of ${recipients.length} recipients. ${errors > 0 ? errors + ' errors — check the log.' : 'All successful.'}`;
-  logEntry('info', `Generation complete. ${generated} ready, ${errors} errors.`);
+  logEntry('success', `Generation complete. ${generated} ready, ${errors} errors.`);
   document.getElementById('btn-generate').disabled = false;
+}
+
+function getVal(item, ...keys) {
+  for (const key of keys) {
+    if (item[key] !== undefined && item[key] !== null && item[key] !== '') return item[key];
+  }
+  return '';
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d)) return dateStr;
+    return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+  } catch { return dateStr; }
+}
+
+function getRole(item, recipientEmail) {
+  const ownerEmail = (getVal(item, '[OwnerEmail]', 'ownerEmail') || '').toLowerCase();
+  const expertEmail = (getVal(item, '[ExpertEmail]', 'expertEmail') || '').toLowerCase();
+  const recEmail = (recipientEmail || '').toLowerCase();
+  const isOwner = ownerEmail === recEmail;
+  const isExpert = expertEmail === recEmail;
+  if (isOwner && isExpert) return 'Owner &amp; Expert';
+  if (isOwner) return 'Owner';
+  if (isExpert) return 'Expert';
+  return 'Owner';
+}
+
+function generateEmailHtml(recipient) {
+  const name = recipient.recipientName || 'there';
+  const recEmail = (recipient.recipientEmail || '').toLowerCase();
+  const sections = recipient.sections || {};
+  const unpublished = sections.unpublished || [];
+  const inProgress = sections.inProgress || [];
+  const dueSoon = sections.dueSoon || [];
+  const overdue = sections.overdue || [];
+  const totalActionable = unpublished.length + inProgress.length + overdue.length;
+  const totalAll = totalActionable + dueSoon.length;
+
+  const showTraining = recipient.showTrainingBanner || needsTrainingBannerFromData(recipient, recEmail);
+
+  function buildTable(items, dateLabel, daysLabel, daysColor, daysHeader) {
+    if (!items || items.length === 0) return '';
+    const rows = items.map(item => {
+      const processName = getVal(item, '[ProcessName]', 'processName') || 'Unknown process';
+      const processUrl = getVal(item, '[ProcessURL]', 'processUrl') || '#';
+      const daysCount = parseInt(getVal(item, '[DaysCount]', 'daysCount') || 0);
+      const eventDate = formatDate(getVal(item, '[EventDate]', 'eventDate') || '');
+      const sameOwnerExpert = parseInt(getVal(item, '[SameOwnerExpert]', 'sameOwnerExpert') || 0) === 1;
+      const role = getRole(item, recEmail);
+      const samePill = sameOwnerExpert ? ` <span style="display:inline-block;margin-left:6px;padding:1px 6px;background-color:#fce8e6;color:#a50e0e;font-size:11px;font-weight:600;border-radius:3px;vertical-align:middle;">&#9888; SAME PERSON</span>` : '';
+      return `<tr>
+        <td style="padding:12px;border-bottom:1px solid #f0f1f3;line-height:1.4;">
+          <a href="${escHtmlAttr(processUrl)}" style="color:#1a73e8;text-decoration:none;font-weight:500;">${escHtml(processName)}</a>${samePill}
+        </td>
+        <td style="padding:12px;border-bottom:1px solid #f0f1f3;color:#202124;">${role}</td>
+        <td style="padding:12px;border-bottom:1px solid #f0f1f3;color:#5f6368;">${escHtml(eventDate)}</td>
+        <td style="padding:12px;border-bottom:1px solid #f0f1f3;color:${daysColor};font-weight:600;text-align:right;">${daysCount}</td>
+      </tr>`;
+    }).join('');
+    return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:10px;border-collapse:collapse;font-size:14px;">
+      <thead>
+        <tr style="background-color:#f8f9fa;">
+          <th align="left" style="padding:10px 12px;border-bottom:1px solid #e1e4e8;font-weight:600;color:#5f6368;font-size:13px;">Process</th>
+          <th align="left" style="padding:10px 12px;border-bottom:1px solid #e1e4e8;font-weight:600;color:#5f6368;font-size:13px;width:120px;">Your role</th>
+          <th align="left" style="padding:10px 12px;border-bottom:1px solid #e1e4e8;font-weight:600;color:#5f6368;font-size:13px;width:130px;">${dateLabel}</th>
+          <th align="right" style="padding:10px 12px;border-bottom:1px solid #e1e4e8;font-weight:600;color:#5f6368;font-size:13px;width:110px;">${daysHeader}</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+
+  function getSameOwnerFootnotes(items) {
+    return items.filter(item => parseInt(getVal(item, '[SameOwnerExpert]', 'sameOwnerExpert') || 0) === 1)
+      .map(item => {
+        const processName = getVal(item, '[ProcessName]', 'processName') || 'Unknown process';
+        return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:10px;background-color:#fce8e6;border-left:4px solid #d93025;border-radius:4px;">
+          <tr><td style="padding:10px 14px;">
+            <p style="margin:0;font-size:13px;line-height:1.5;color:#5f0d0d;">
+              &#9888; <strong>"${escHtml(processName)}"</strong> has the same person listed as Owner and Expert. These should be different people, so one person isn't accountable for maintaining and approving the process.
+            </p>
+          </td></tr>
+        </table>`;
+      }).join('');
+  }
+
+  function buildSection(emoji, title, color, items, subtext, dateLabel, daysLabel, daysColor, daysHeader) {
+    if (!items || items.length === 0) return '';
+    const footnotes = getSameOwnerFootnotes(items);
+    return `<tr>
+      <td style="padding:28px 28px 0 28px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr><td style="border-bottom:2px solid ${color};padding-bottom:6px;">
+            <span style="font-size:16px;font-weight:600;color:${color};">${emoji} ${title}</span>
+            <span style="font-size:14px;color:#5f6368;margin-left:8px;">(${items.length} item${items.length !== 1 ? 's' : ''})</span>
+          </td></tr>
+        </table>
+        <p style="margin:8px 0 0 0;font-size:13px;line-height:1.5;color:#5f6368;font-style:italic;">${subtext}</p>
+        ${buildTable(items, dateLabel, daysLabel, daysColor, daysHeader)}
+        ${footnotes}
+      </td>
+    </tr>`;
+  }
+
+  if (totalAll === 0) {
+    return `<!DOCTYPE html><html><body style="margin:0;padding:0;background-color:#f4f5f7;font-family:'Segoe UI',Arial,sans-serif;color:#202124;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f4f5f7;padding:24px 12px;"><tr><td align="center">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="640" style="max-width:640px;width:100%;background-color:#ffffff;border-radius:8px;border:1px solid #e1e4e8;overflow:hidden;">
+      <tr><td style="background-color:#000054;padding:20px 28px;">
+        <div style="font-size:13px;color:#a8b0d4;letter-spacing:0.5px;text-transform:uppercase;font-weight:600;">Nintex Process Manager</div>
+        <div style="font-size:22px;color:#ffffff;margin-top:4px;font-weight:600;">Your monthly action summary</div>
+      </td></tr>
+      <tr><td style="padding:24px 28px;">
+        <p style="margin:0;font-size:15px;color:#202124;">Hi <strong>${escHtml(name)}</strong>,</p>
+        <p style="margin:16px 0 0 0;font-size:15px;color:#202124;">Great news — you have no processes requiring attention this month. Keep up the great work maintaining your processes in Nintex.</p>
+      </td></tr>
+      <tr><td style="height:32px;"></td></tr>
+      <tr><td style="background-color:#f8f9fa;padding:18px 28px;border-top:1px solid #e1e4e8;">
+        <p style="margin:0 0 6px 0;font-size:13px;color:#5f6368;">Need help? Contact the Projects and Business Transformation team at <a href="mailto:ve.pmo@rmit.edu.au" style="color:#1a73e8;">ve.pmo@rmit.edu.au</a>.</p>
+        <p style="margin:0;font-size:12px;color:#9aa0a6;">This is an automated email. You're receiving this because you're listed as an Owner or Expert on processes in Process Manager.</p>
+      </td></tr>
+    </table></td></tr></table></body></html>`;
+  }
+
+  const trainingBanner = showTraining ? `<tr><td style="padding:16px 28px 0 28px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#fff8e1;border-left:4px solid #f4b400;border-radius:4px;">
+      <tr><td style="padding:14px 16px;">
+        <div style="font-size:14px;font-weight:600;color:#5f4500;margin-bottom:8px;">🎓 Action required: Complete Process Manager training</div>
+        <p style="margin:0 0 8px 0;font-size:14px;line-height:1.5;color:#5f4500;">It looks like you don't have editing permissions in Process Manager yet. To gain full editing rights, please complete the two modules in Workday.</p>
+        <p style="margin:0 0 8px 0;font-size:14px;line-height:1.5;color:#5f4500;">👉 <a href="https://wd3.myworkday.com/rmit/learning/program/ef5c65ff05611001212793b98d970000" style="color:#1a73e8;text-decoration:underline;">Process Manager Modules</a></p>
+        <p style="margin:0;font-size:13px;line-height:1.5;color:#5f4500;">Once done, your access will be upgraded within 48 hours. If you've already completed these modules, please contact <a href="mailto:ve.pmo@rmit.edu.au" style="color:#1a73e8;">ve.pmo@rmit.edu.au</a>.</p>
+      </td></tr>
+    </table>
+  </td></tr>` : '';
+
+  const unpublishedSection = buildSection('🗄️', 'Unpublished over 30 days', '#d93025', unpublished, 'Action: Republish, or request archive if no longer relevant.', 'Unpublished since', d => `${d} days`, '#d93025', 'Days waiting');
+  const inProgressSection = buildSection('📝', 'Drafts in progress over 60 days', '#9a7000', inProgress, 'Action: Complete and submit for approval, or request archive if no longer relevant.', 'In progress since', d => `${d} days`, '#9a7000', 'Days in progress');
+  const dueSoonSection = buildSection('🗓️', 'Reviews due in the next 30 days', '#00897b', dueSoon, 'No action needed yet, but worth blocking out some time to review before they become overdue.', 'Review date', d => `${d} days`, '#00695c', 'Days until due');
+  const overdueSection = buildSection('📌', 'Overdue reviews', '#1a73e8', overdue, 'Action: Review and confirm it\'s still accurate (resetting the review date), update it, or archive it if it\'s no longer relevant.', 'Review date', d => `${d} days`, '#1a73e8', 'Days overdue');
+
+  return `<!DOCTYPE html><html><body style="margin:0;padding:0;background-color:#f4f5f7;font-family:'Segoe UI',Arial,sans-serif;color:#202124;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f4f5f7;padding:24px 12px;"><tr><td align="center">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="640" style="max-width:640px;width:100%;background-color:#ffffff;border-radius:8px;border:1px solid #e1e4e8;overflow:hidden;">
+
+  <tr><td style="background-color:#000054;padding:20px 28px;">
+    <div style="font-size:13px;color:#a8b0d4;letter-spacing:0.5px;text-transform:uppercase;font-weight:600;">Nintex Process Manager</div>
+    <div style="font-size:22px;color:#ffffff;margin-top:4px;font-weight:600;">Your monthly action summary</div>
+  </td></tr>
+
+  <tr><td style="padding:24px 28px 8px 28px;">
+    <p style="margin:0;font-size:15px;line-height:1.5;color:#202124;">Hi <strong>${escHtml(name)}</strong>,</p>
+    <p style="margin:12px 0 0 0;font-size:15px;line-height:1.5;color:#202124;">Below is your monthly summary of processes in Nintex Process Manager that need your attention. You're listed as Owner or Expert on the items below, ordered by priority.</p>
+    <p style="margin:12px 0 0 0;font-size:15px;line-height:1.5;color:#202124;"><strong>Total items requiring action: ${totalActionable}</strong></p>
+  </td></tr>
+
+  ${trainingBanner}
+  ${unpublishedSection}
+  ${inProgressSection}
+  ${dueSoonSection}
+  ${overdueSection}
+
+  <tr><td style="height:32px;"></td></tr>
+
+  <tr><td style="background-color:#f8f9fa;padding:18px 28px;border-top:1px solid #e1e4e8;">
+    <p style="margin:0 0 6px 0;font-size:13px;line-height:1.5;color:#5f6368;">Need help? Contact the Projects and Business Transformation team at <a href="mailto:ve.pmo@rmit.edu.au" style="color:#1a73e8;">ve.pmo@rmit.edu.au</a>.</p>
+    <p style="margin:0;font-size:12px;line-height:1.5;color:#9aa0a6;">This is an automated email. You're receiving this because you're listed as an Owner or Expert on processes in Process Manager.</p>
+  </td></tr>
+
+</table></td></tr></table></body></html>`;
+}
+
+function needsTrainingBannerFromData(recipient, recEmail) {
+  const s = recipient.sections || {};
+  const allItems = [...(s.unpublished||[]), ...(s.inProgress||[]), ...(s.dueSoon||[]), ...(s.overdue||[])];
+  return allItems.some(item => {
+    const ownerEmail = (getVal(item, '[OwnerEmail]', 'ownerEmail') || '').toLowerCase();
+    const expertEmail = (getVal(item, '[ExpertEmail]', 'expertEmail') || '').toLowerCase();
+    const ownerPerm = getVal(item, '[OwnerPermission]', 'ownerPermission') || '';
+    const expertPerm = getVal(item, '[ExpertPermission]', 'expertPermission') || '';
+    if (ownerEmail === recEmail && ownerPerm === 'User') return true;
+    if (expertEmail === recEmail && expertPerm === 'User') return true;
+    return false;
+  });
 }
 
 function previewRecipient(idx) {
@@ -337,12 +532,11 @@ function previewRecipient(idx) {
 function showPreview() {
   const r = generatedRecipients[currentPreviewIndex];
   if (!r || !r.emailHtml) return;
-  document.getElementById('modal-title').textContent = `Preview: ${r.recipientName} (${r.recipientEmail})`;
+  document.getElementById('modal-title').textContent = `${r.recipientName} — ${r.recipientEmail}`;
   document.getElementById('modal-nav-text').textContent = `${currentPreviewIndex + 1} of ${generatedRecipients.length}`;
   document.getElementById('btn-prev').disabled = currentPreviewIndex === 0;
   document.getElementById('btn-next').disabled = currentPreviewIndex === generatedRecipients.length - 1;
-  const iframe = document.getElementById('preview-iframe');
-  iframe.srcdoc = r.emailHtml;
+  document.getElementById('preview-iframe').srcdoc = r.emailHtml;
   document.getElementById('modal-overlay').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
@@ -361,80 +555,6 @@ function closeModal() {
 
 function closeModalOnOverlay(e) {
   if (e.target === document.getElementById('modal-overlay')) closeModal();
-}
-
-function generateEmailHtml(recipient) {
-  const name = recipient.recipientName || 'there';
-  const sections = recipient.sections || {};
-  const unpublished = sections.unpublished || [];
-  const inProgress = sections.inProgress || [];
-  const dueSoon = sections.dueSoon || [];
-  const overdue = sections.overdue || [];
-
-  function getVal(item, ...keys) {
-    for (const key of keys) {
-      if (item[key] !== undefined && item[key] !== null && item[key] !== '') return item[key];
-    }
-    return '';
-  }
-
-  function buildTable(items, daysLabel) {
-    if (!items || items.length === 0) return '';
-    const rows = items.map(item => {
-      const processName = getVal(item, '[ProcessName]', 'processName', 'ProcessName') || 'Unknown process';
-      const processUrl = getVal(item, '[ProcessURL]', 'processUrl', 'ProcessURL') || '#';
-      const daysCount = parseInt(getVal(item, '[DaysCount]', 'daysCount', 'DaysCount') || 0);
-      return `<tr>
-        <td style="border:1px solid #ddd;padding:8px 10px;">
-          <a href="${escHtmlAttr(processUrl)}" style="color:#002664;text-decoration:none;">${escHtml(processName)}</a>
-        </td>
-        <td style="border:1px solid #ddd;padding:8px 10px;white-space:nowrap;color:#555;">${escHtml(daysLabel(daysCount))}</td>
-      </tr>`;
-    }).join('');
-    return `<table style="border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:14px;margin-bottom:4px;">
-      <thead><tr style="background:#f5f5f5;">
-        <th style="border:1px solid #ddd;padding:8px 10px;text-align:left;font-weight:600;">Process</th>
-        <th style="border:1px solid #ddd;padding:8px 10px;text-align:left;font-weight:600;white-space:nowrap;">Days</th>
-      </tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`;
-  }
-
-  function buildSection(title, emoji, color, items, actionText, daysLabel) {
-    if (!items || items.length === 0) return '';
-    return `<h2 style="color:${color};margin:28px 0 6px;font-size:17px;">${emoji} ${title} (${items.length} item${items.length !== 1 ? 's' : ''})</h2>
-      <p style="font-style:italic;color:#666;font-size:13px;margin-bottom:10px;">Action: ${actionText}</p>
-      ${buildTable(items, daysLabel)}`;
-  }
-
-  const u = buildSection('Unpublished', '🚫', '#f57c00', unpublished, 'Republish or archive these processes.', d => `Unpublished ${d} day${d !== 1 ? 's' : ''} ago`);
-  const ip = buildSection('In Progress', '📝', '#1976d2', inProgress, 'Submit for approval or archive.', d => `${d} day${d !== 1 ? 's' : ''} in progress`);
-  const ds = buildSection('Due Soon for Review', '📅', '#00897b', dueSoon, 'Reviews due in the next 30 days.', d => `Due in ${d} day${d !== 1 ? 's' : ''}`);
-  const ov = buildSection('Overdue Reviews', '⚠️', '#c62828', overdue, 'Please review and republish.', d => `${d} day${d !== 1 ? 's' : ''} overdue`);
-
-  if (!u && !ip && !ds && !ov) {
-    return `<div style="font-family:Arial,sans-serif;max-width:700px;color:#333;">
-      <h1 style="color:#002664;border-bottom:3px solid #002664;padding-bottom:8px;font-size:22px;">Nintex Process Manager</h1>
-      <p style="margin:16px 0;">Hi ${escHtml(name)},</p>
-      <p style="color:#2e7d32;font-size:16px;">&#10003; Great news — you have no processes requiring attention this month.</p>
-      <p style="margin-top:12px;font-size:13px;color:#666;">Keep up the great work maintaining your processes in Nintex.</p>
-      <div style="margin-top:32px;padding-top:16px;border-top:1px solid #eee;">
-        <p style="font-size:13px;color:#666;">For questions, contact <a href="mailto:ve.pmo@rmit.edu.au" style="color:#002664;">ve.pmo@rmit.edu.au</a></p>
-        <p style="font-size:11px;color:#999;margin-top:8px;">Automated message from Nintex Process Manager Notification system — College of Vocational Education, Projects and Business Transformation.</p>
-      </div>
-    </div>`;
-  }
-
-  return `<div style="font-family:Arial,sans-serif;max-width:700px;color:#333333;">
-    <h1 style="color:#002664;border-bottom:3px solid #002664;padding-bottom:8px;font-size:22px;">Nintex Process Manager</h1>
-    <p style="margin:16px 0;">Hi ${escHtml(name)},</p>
-    <p style="margin-bottom:8px;">Your monthly Nintex digest. The following processes need your attention:</p>
-    ${u}${ip}${ds}${ov}
-    <div style="margin-top:32px;padding-top:16px;border-top:1px solid #eee;">
-      <p style="font-size:13px;color:#666;">For questions, contact <a href="mailto:ve.pmo@rmit.edu.au" style="color:#002664;">ve.pmo@rmit.edu.au</a></p>
-      <p style="font-size:11px;color:#999;margin-top:8px;">Automated message from Nintex Process Manager Notification system — College of Vocational Education, Projects and Business Transformation.</p>
-    </div>
-  </div>`;
 }
 
 function downloadReadyFile() {
@@ -472,16 +592,9 @@ function logEntry(type, message) {
   log.scrollTop = log.scrollHeight;
 }
 
-function escHtml(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function escHtmlAttr(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-
+function escHtml(str) { return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escHtmlAttr(str) { return String(str||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
 </body>
