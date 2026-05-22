@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nintex Monthly Digest Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/msal.js/1.4.18/msal.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f4f6f9; color: #333; }
+  .header { background: #002664; color: white; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .header h1 { font-size: 20px; font-weight: 600; }
+  .header p { font-size: 13px; opacity: 0.8; margin-top: 2px; }
+  .badge { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+  .card { background: white; border-radius: 8px; border: 1px solid #e0e4ea; padding: 24px; margin-bottom: 20px; }
+  .card h2 { font-size: 16px; font-weight: 600; color: #002664; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card h2 .icon { width: 24px; height: 24px; background: #e8edf8; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .stat { background: #f8f9fc; border-radius: 8px; padding: 16px; text-align: center; border: 1px solid #e0e4ea; }
+  .stat .number { font-size: 28px; font-weight: 700; color: #002664; }
+  .stat .label { font-size: 12px; color: #666; margin-top: 4px; }
+  .btn { padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+  .btn-primary { background: #002664; color: white; }
+  .btn-primary:hover { background: #001a47; }
+  .btn-primary:disabled { background: #8899bb; cursor: not-allowed; }
+  .btn-secondary { background: white; color: #002664; border: 1px solid #002664; }
+  .btn-secondary:hover { background: #f0f4ff; }
+  .btn-danger { background: #c62828; color: white; }
+  .btn-danger:hover { background: #a31e1e; }
+  .btn-success { background: #2e7d32; color: white; }
+  .btn-success:hover { background: #1b5e20; }
+  .log { background: #1e1e2e; border-radius: 8px; padding: 16px; font-family: monospace; font-size: 13px; max-height: 300px; overflow-y: auto; }
+  .log-entry { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 12px; align-items: flex-start; }
+  .log-entry:last-child { border-bottom: none; }
+  .log-time { color: #666; white-space: nowrap; font-size: 11px; margin-top: 2px; }
+  .log-success { color: #4caf50; }
+  .log-error { color: #f44336; }
+  .log-info { color: #64b5f6; }
+  .log-warn { color: #ffb74d; }
+  .progress-bar { height: 8px; background: #e0e4ea; border-radius: 4px; overflow: hidden; margin: 12px 0; }
+  .progress-fill { height: 100%; background: #002664; border-radius: 4px; transition: width 0.3s; }
+  .progress-text { font-size: 13px; color: #666; text-align: center; margin-top: 4px; }
+  .auth-section { text-align: center; padding: 40px; }
+  .auth-section p { color: #666; margin-bottom: 20px; font-size: 15px; }
+  .recipient-list { max-height: 200px; overflow-y: auto; border: 1px solid #e0e4ea; border-radius: 6px; }
+  .recipient-item { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+  .recipient-item:last-child { border-bottom: none; }
+  .recipient-item .status { font-size: 11px; padding: 2px 8px; border-radius: 10px; }
+  .status-pending { background: #fff3e0; color: #e65100; }
+  .status-sent { background: #e8f5e9; color: #2e7d32; }
+  .status-error { background: #ffebee; color: #c62828; }
+  .status-sending { background: #e3f2fd; color: #1565c0; }
+  .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .config-item label { display: block; font-size: 12px; color: #666; margin-bottom: 4px; }
+  .config-item input { width: 100%; padding: 8px 12px; border: 1px solid #e0e4ea; border-radius: 6px; font-size: 13px; }
+  .config-item input:focus { outline: none; border-color: #002664; }
+  .section-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; margin-left: 4px; }
+  .badge-unpublished { background: #fff3e0; color: #e65100; }
+  .badge-inprogress { background: #e3f2fd; color: #1565c0; }
+  .badge-duesoon { background: #e0f2f1; color: #00695c; }
+  .badge-overdue { background: #ffebee; color: #c62828; }
+  .actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .divider { height: 1px; background: #e0e4ea; margin: 20px 0; }
+  #app { display: none; }
+  .alert { padding: 12px 16px; border-radius: 6px; font-size: 13px; margin-bottom: 16px; }
+  .alert-info { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
+  .alert-warning { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
+  .alert-success { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+  .alert-error { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Nintex Monthly Digest Generator</h1>
+    <p>College of Vocational Education — Projects and Business Transformation</p>
+  </div>
+  <div id="auth-badge" class="badge">Not signed in</div>
+</div>
+
+<div class="container">
+
+  <!-- Login screen -->
+  <div id="login-screen">
+    <div class="card">
+      <div class="auth-section">
+        <p>Sign in with your RMIT account to load the digest queue and send emails.</p>
+        <button class="btn btn-primary" onclick="signIn()">Sign in with RMIT account</button>
+        <p style="margin-top: 16px; font-size: 12px; color: #999;">You'll be redirected to RMIT's login page.</p>
+      </div>
+    </div>
+    <div class="alert alert-warning">
+      <strong>First time setup:</strong> This tool requires an Azure AD App Registration. If sign-in fails with an error about "application not found" or "AADSTS", contact RMIT IT and provide them the App Registration details in the README.
+    </div>
+  </div>
+
+  <!-- Main app -->
+  <div id="app">
+
+    <div class="alert alert-info" id="queue-alert" style="display:none"></div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat">
+        <div class="number" id="stat-total">0</div>
+        <div class="label">Total recipients</div>
+      </div>
+      <div class="stat">
+        <div class="number" id="stat-pending">0</div>
+        <div class="label">Pending</div>
+      </div>
+      <div class="stat">
+        <div class="number" id="stat-sent">0</div>
+        <div class="label">Sent</div>
+      </div>
+      <div class="stat">
+        <div class="number" id="stat-errors">0</div>
+        <div class="label">Errors</div>
+      </div>
+    </div>
+
+    <!-- Config -->
+    <div class="card">
+      <h2><span class="icon">⚙</span> Settings</h2>
+      <div class="config-grid">
+        <div class="config-item">
+          <label>Send from email</label>
+          <input type="email" id="from-email" value="ve.pmo@rmit.edu.au" />
+        </div>
+        <div class="config-item">
+          <label>Test mode — redirect all emails to</label>
+          <input type="email" id="test-email" placeholder="Leave blank to send to real recipients" />
+        </div>
+      </div>
+      <p style="font-size: 12px; color: #999; margin-top: 8px;">If test mode email is set, ALL emails will go to that address instead of real recipients.</p>
+    </div>
+
+    <!-- Queue -->
+    <div class="card">
+      <h2><span class="icon">📋</span> Digest queue</h2>
+      <div class="actions" style="margin-bottom: 16px;">
+        <button class="btn btn-secondary" onclick="loadQueue()">↻ Refresh queue</button>
+        <button class="btn btn-primary" id="btn-send-all" onclick="sendAll()" disabled>Send all pending emails</button>
+        <button class="btn btn-danger" id="btn-stop" onclick="stopSending()" style="display:none">Stop sending</button>
+      </div>
+
+      <div class="progress-bar" id="progress-bar" style="display:none">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="progress-text" id="progress-text" style="display:none"></div>
+
+      <div class="recipient-list" id="recipient-list">
+        <div style="padding: 20px; text-align: center; color: #999; font-size: 13px;">Click "Refresh queue" to load recipients</div>
+      </div>
+    </div>
+
+    <!-- Log -->
+    <div class="card">
+      <h2><span class="icon">📄</span> Activity log</h2>
+      <div class="log" id="activity-log">
+        <div class="log-entry"><span class="log-info log-time">--:--:--</span><span class="log-info">Tool loaded. Sign in and refresh queue to begin.</span></div>
+      </div>
+      <div style="margin-top: 12px; display: flex; gap: 8px;">
+        <button class="btn btn-secondary" onclick="downloadLog()">Download log</button>
+        <button class="btn btn-secondary" onclick="clearLog()">Clear log</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const CONFIG = {
+  clientId: 'YOUR_APP_REGISTRATION_CLIENT_ID',
+  authority: 'https://login.microsoftonline.com/d1323671-cdbe-4417-b4d4-bdb24b51316b',
+  redirectUri: window.location.href.split('?')[0],
+  scopes: ['https://graph.microsoft.com/Mail.Send', 'https://graph.microsoft.com/Sites.ReadWrite.All', 'https://graph.microsoft.com/User.Read'],
+  sharePointSite: 'https://rmiteduau.sharepoint.com/sites/VEPMO',
+  listName: 'Nintex Monthly Digest Queue',
+  graphEndpoint: 'https://graph.microsoft.com/v1.0'
+};
+
+let msalInstance;
+let accessToken;
+let queueItems = [];
+let isSending = false;
+let shouldStop = false;
+
+function initMsal() {
+  msalInstance = new Msal.UserAgentApplication({
+    auth: {
+      clientId: CONFIG.clientId,
+      authority: CONFIG.authority,
+      redirectUri: CONFIG.redirectUri
+    },
+    cache: { cacheLocation: 'sessionStorage', storeAuthStateInCookie: false }
+  });
+  msalInstance.handleRedirectCallback((error, response) => {
+    if (error) { logEntry('error', 'Auth error: ' + error.errorMessage); return; }
+    if (response) { onSignedIn(response); }
+  });
+  const account = msalInstance.getAccount();
+  if (account) { acquireToken(); }
+}
+
+function signIn() {
+  msalInstance.loginRedirect({ scopes: CONFIG.scopes });
+}
+
+function acquireToken() {
+  msalInstance.acquireTokenSilent({ scopes: CONFIG.scopes })
+    .then(response => onSignedIn(response))
+    .catch(() => {
+      msalInstance.acquireTokenRedirect({ scopes: CONFIG.scopes });
+    });
+}
+
+function onSignedIn(response) {
+  accessToken = response.accessToken;
+  const account = msalInstance.getAccount();
+  document.getElementById('auth-badge').textContent = account.name || account.userName;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  logEntry('success', 'Signed in as ' + (account.name || account.userName));
+  loadQueue();
+}
+
+async function graphRequest(url, method = 'GET', body = null) {
+  const options = {
+    method,
+    headers: {
+      'Authorization': 'Bearer ' + accessToken,
+      'Content-Type': 'application/json'
+    }
+  };
+  if (body) options.body = JSON.stringify(body);
+  const response = await fetch(CONFIG.graphEndpoint + url, options);
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({ error: { message: response.statusText } }));
+    throw new Error(err.error?.message || response.statusText);
+  }
+  if (response.status === 204) return null;
+  return response.json();
+}
+
+async function getSiteId() {
+  const hostname = 'rmiteduau.sharepoint.com';
+  const sitePath = '/sites/VEPMO';
+  const data = await graphRequest(`/sites/${hostname}:${sitePath}`);
+  return data.id;
+}
+
+async function loadQueue() {
+  logEntry('info', 'Loading digest queue...');
+  document.getElementById('btn-send-all').disabled = true;
+  try {
+    const siteId = await getSiteId();
+    const listsData = await graphRequest(`/sites/${siteId}/lists?$filter=displayName eq '${encodeURIComponent(CONFIG.listName)}'`);
+    if (!listsData.value || listsData.value.length === 0) {
+      logEntry('error', `List "${CONFIG.listName}" not found. Has Power Automate populated it yet?`);
+      document.getElementById('queue-alert').textContent = `The list "${CONFIG.listName}" was not found. Run the Power Automate flow first to populate the queue.`;
+      document.getElementById('queue-alert').style.display = 'block';
+      return;
+    }
+    const listId = listsData.value[0].id;
+    document.getElementById('queue-alert').style.display = 'none';
+    const itemsData = await graphRequest(`/sites/${siteId}/lists/${listId}/items?$expand=fields&$top=500`);
+    queueItems = itemsData.value.map(item => ({
+      id: item.id,
+      listId,
+      siteId,
+      recipientName: item.fields.RecipientName || '',
+      recipientEmail: item.fields.RecipientEmail || '',
+      processData: item.fields.ProcessData || '{}',
+      status: item.fields.Status || 'Pending',
+      sentAt: item.fields.SentAt || ''
+    }));
+    renderQueue();
+    updateStats();
+    const pending = queueItems.filter(i => i.status === 'Pending').length;
+    logEntry('success', `Loaded ${queueItems.length} recipients (${pending} pending)`);
+    if (pending > 0) document.getElementById('btn-send-all').disabled = false;
+  } catch (err) {
+    logEntry('error', 'Failed to load queue: ' + err.message);
+  }
+}
+
+function renderQueue() {
+  const list = document.getElementById('recipient-list');
+  if (queueItems.length === 0) {
+    list.innerHTML = '<div style="padding: 20px; text-align: center; color: #999; font-size: 13px;">No items in queue</div>';
+    return;
+  }
+  list.innerHTML = queueItems.map((item, idx) => `
+    <div class="recipient-item" id="recipient-${idx}">
+      <div>
+        <strong style="font-size: 13px;">${escHtml(item.recipientName)}</strong>
+        <span style="color: #666; font-size: 12px; margin-left: 8px;">${escHtml(item.recipientEmail)}</span>
+        ${getSectionBadges(item.processData)}
+      </div>
+      <span class="status status-${item.status.toLowerCase()}">${item.status}</span>
+    </div>
+  `).join('');
+}
+
+function getSectionBadges(processDataStr) {
+  try {
+    const data = typeof processDataStr === 'string' ? JSON.parse(processDataStr) : processDataStr;
+    const sections = data.sections || {};
+    let badges = '';
+    if ((sections.unpublished || []).length > 0) badges += `<span class="section-badge badge-unpublished">🚫 ${sections.unpublished.length}</span>`;
+    if ((sections.inProgress || []).length > 0) badges += `<span class="section-badge badge-inprogress">📝 ${sections.inProgress.length}</span>`;
+    if ((sections.dueSoon || []).length > 0) badges += `<span class="section-badge badge-duesoon">📅 ${sections.dueSoon.length}</span>`;
+    if ((sections.overdue || []).length > 0) badges += `<span class="section-badge badge-overdue">⚠️ ${sections.overdue.length}</span>`;
+    return badges;
+  } catch { return ''; }
+}
+
+function updateStats() {
+  document.getElementById('stat-total').textContent = queueItems.length;
+  document.getElementById('stat-pending').textContent = queueItems.filter(i => i.status === 'Pending').length;
+  document.getElementById('stat-sent').textContent = queueItems.filter(i => i.status === 'Sent').length;
+  document.getElementById('stat-errors').textContent = queueItems.filter(i => i.status === 'Error').length;
+}
+
+async function sendAll() {
+  const pending = queueItems.filter(i => i.status === 'Pending');
+  if (pending.length === 0) { logEntry('warn', 'No pending items to send'); return; }
+  isSending = true;
+  shouldStop = false;
+  document.getElementById('btn-send-all').disabled = true;
+  document.getElementById('btn-stop').style.display = 'inline-block';
+  document.getElementById('progress-bar').style.display = 'block';
+  document.getElementById('progress-text').style.display = 'block';
+  logEntry('info', `Starting send for ${pending.length} recipients...`);
+  let sent = 0;
+  let errors = 0;
+  for (let i = 0; i < pending.length; i++) {
+    if (shouldStop) { logEntry('warn', 'Sending stopped by user'); break; }
+    const item = pending[i];
+    const pct = Math.round((i / pending.length) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = `${i + 1} of ${pending.length} — ${item.recipientName}`;
+    updateItemStatus(item, 'Sending');
+    try {
+      await sendDigestEmail(item);
+      await updateQueueItemStatus(item, 'Sent');
+      updateItemStatus(item, 'Sent');
+      logEntry('success', `✓ Sent to ${item.recipientName} (${item.recipientEmail})`);
+      sent++;
+    } catch (err) {
+      await updateQueueItemStatus(item, 'Error');
+      updateItemStatus(item, 'Error');
+      logEntry('error', `✗ Failed for ${item.recipientName}: ${err.message}`);
+      errors++;
+    }
+    updateStats();
+    await sleep(500);
+  }
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('progress-text').textContent = `Complete — ${sent} sent, ${errors} errors`;
+  document.getElementById('btn-stop').style.display = 'none';
+  document.getElementById('btn-send-all').disabled = false;
+  isSending = false;
+  logEntry('info', `Send complete. ${sent} sent, ${errors} errors.`);
+}
+
+function stopSending() {
+  shouldStop = true;
+  logEntry('warn', 'Stopping after current email...');
+}
+
+function updateItemStatus(item, status) {
+  const idx = queueItems.indexOf(item);
+  if (idx === -1) return;
+  queueItems[idx].status = status;
+  const el = document.getElementById(`recipient-${queueItems.indexOf(item)}`);
+  if (!el) return;
+  const badge = el.querySelector('.status');
+  if (badge) {
+    badge.className = `status status-${status.toLowerCase()}`;
+    badge.textContent = status;
+  }
+}
+
+async function updateQueueItemStatus(item, status) {
+  try {
+    await graphRequest(`/sites/${item.siteId}/lists/${item.listId}/items/${item.id}/fields`, 'PATCH', {
+      Status: status,
+      SentAt: new Date().toISOString()
+    });
+  } catch (err) {
+    logEntry('warn', `Could not update status in SharePoint: ${err.message}`);
+  }
+}
+
+async function sendDigestEmail(item) {
+  const testEmail = document.getElementById('test-email').value.trim();
+  const toEmail = testEmail || item.recipientEmail;
+  const fromEmail = document.getElementById('from-email').value.trim();
+  let processData;
+  try {
+    processData = typeof item.processData === 'string' ? JSON.parse(item.processData) : item.processData;
+  } catch {
+    throw new Error('Invalid process data JSON');
+  }
+  const htmlBody = generateEmailHtml(processData);
+  const subject = testEmail
+    ? `[TEST] Nintex digest for ${item.recipientName} — ${getMonthYear()}`
+    : `[Nintex] Your monthly process digest — ${getMonthYear()}`;
+  const mailPayload = {
+    message: {
+      subject,
+      body: { contentType: 'HTML', content: htmlBody },
+      toRecipients: [{ emailAddress: { address: toEmail, name: item.recipientName } }]
+    },
+    saveToSentItems: true
+  };
+  await graphRequest(`/users/${fromEmail}/sendMail`, 'POST', mailPayload);
+}
+
+function generateEmailHtml(data) {
+  const name = data.recipientName || 'there';
+  const sections = data.sections || {};
+  const unpublished = sections.unpublished || [];
+  const inProgress = sections.inProgress || [];
+  const dueSoon = sections.dueSoon || [];
+  const overdue = sections.overdue || [];
+
+  function buildTable(items, daysLabel) {
+    if (items.length === 0) return '';
+    const rows = items.map(item => {
+      const processName = item['[ProcessName]'] || item.processName || 'Unknown process';
+      const processUrl = item['[ProcessURL]'] || item.processUrl || '#';
+      const daysCount = item['[DaysCount]'] || item.daysCount || 0;
+      return `<tr>
+        <td style="border:1px solid #ddd;padding:8px;"><a href="${escHtml(processUrl)}" style="color:#002664;">${escHtml(processName)}</a></td>
+        <td style="border:1px solid #ddd;padding:8px;white-space:nowrap;">${daysLabel(daysCount)}</td>
+      </tr>`;
+    }).join('');
+    return `<table style="border-collapse:collapse;width:100%;font-family:Arial,sans-serif;margin-bottom:8px;">
+      <thead>
+        <tr style="background:#f5f5f5;">
+          <th style="border:1px solid #ddd;padding:8px;text-align:left;">Process</th>
+          <th style="border:1px solid #ddd;padding:8px;text-align:left;">Days</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+
+  function buildSection(title, emoji, color, items, actionText, daysLabel) {
+    if (items.length === 0) return '';
+    return `
+      <h2 style="color:${color};margin:24px 0 4px;">${emoji} ${title} (${items.length} item${items.length !== 1 ? 's' : ''})</h2>
+      <p style="font-style:italic;color:#666;margin-bottom:8px;">Action: ${actionText}</p>
+      ${buildTable(items, daysLabel)}
+    `;
+  }
+
+  const unpublishedSection = buildSection('Unpublished', '🚫', '#f57c00', unpublished, 'Republish or archive these processes.', d => `Unpublished ${d} days ago`);
+  const inProgressSection = buildSection('In Progress', '📝', '#1976d2', inProgress, 'Submit for approval or archive.', d => `${d} days in progress`);
+  const dueSoonSection = buildSection('Due Soon for Review', '📅', '#00897b', dueSoon, 'Reviews due in the next 30 days.', d => `Due in ${d} days`);
+  const overdueSection = buildSection('Overdue Reviews', '⚠️', '#c62828', overdue, 'Please review and republish.', d => `${d} days overdue`);
+
+  return `<div style="font-family:Arial,sans-serif;max-width:700px;color:#333333;">
+    <h1 style="color:#002664;border-bottom:3px solid #002664;padding-bottom:8px;">Nintex Process Manager</h1>
+    <p style="margin:16px 0;">Hi ${escHtml(name)},</p>
+    <p style="margin-bottom:16px;">Your monthly Nintex digest. Please action the following items:</p>
+    ${unpublishedSection}
+    ${inProgressSection}
+    ${dueSoonSection}
+    ${overdueSection}
+    <div style="margin-top:32px;padding-top:16px;border-top:1px solid #eee;">
+      <p style="font-size:13px;color:#666;">For questions, contact <a href="mailto:ve.pmo@rmit.edu.au" style="color:#002664;">ve.pmo@rmit.edu.au</a></p>
+      <p style="font-size:11px;color:#999;margin-top:8px;">This is an automated message from the Nintex Process Manager Notification system, managed by the College of Vocational Education Projects and Business Transformation team.</p>
+    </div>
+  </div>`;
+}
+
+async function updateQueueItemStatus(item, status) {
+  try {
+    await graphRequest(`/sites/${item.siteId}/lists/${item.listId}/items/${item.id}/fields`, 'PATCH', {
+      Status: status,
+      SentAt: new Date().toISOString()
+    });
+  } catch (err) {
+    logEntry('warn', `Could not update SharePoint status: ${err.message}`);
+  }
+}
+
+function logEntry(type, message) {
+  const log = document.getElementById('activity-log');
+  const time = new Date().toLocaleTimeString('en-AU');
+  const entry = document.createElement('div');
+  entry.className = 'log-entry';
+  entry.innerHTML = `<span class="log-time log-${type}">${time}</span><span class="log-${type}">${escHtml(message)}</span>`;
+  log.appendChild(entry);
+  log.scrollTop = log.scrollHeight;
+}
+
+function downloadLog() {
+  const log = document.getElementById('activity-log');
+  const lines = Array.from(log.querySelectorAll('.log-entry')).map(e => e.textContent).join('\n');
+  const blob = new Blob([lines], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `nintex-digest-log-${new Date().toISOString().slice(0,10)}.txt`;
+  a.click();
+}
+
+function clearLog() {
+  document.getElementById('activity-log').innerHTML = '';
+  logEntry('info', 'Log cleared');
+}
+
+function escHtml(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function getMonthYear() {
+  return new Date().toLocaleDateString('en-AU', { month: 'long', year: 'numeric' });
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+initMsal();
+</script>
+</body>
+</html>
